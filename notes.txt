@@ -1,0 +1,34 @@
+//let num1 = 5;
+//let num2 = 6;
+//let operator = '+';
+
+function operate(n1, n2, ope) {
+    if (ope = '+') {
+        return add(n1, n2);
+    }
+    else if (ope = '-') {
+        return subtract(n1, n2);
+    }
+    else if (ope = '*') {
+        return multiply(n1, n2);
+    }
+    else if (ope = '/') {
+        return divide(n1, n2);
+    }
+
+}
+
+function add(a, b) {
+    return a + b;
+}
+function subtract(a, b) {
+    return a - b;
+}
+function multiply(a, b) {
+    return a * b;
+}
+function divide(a, b) {
+    return a / b;
+}
+
+add(5, 6);

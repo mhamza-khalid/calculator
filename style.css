@@ -1,0 +1,139 @@
+body{
+    background-color: rgb(248, 239, 231);
+}
+
+.main{
+    display: flex;
+    height: 711px;
+    width: 500px;
+    border: 3px solid rgb(255, 201, 154);
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: auto;
+    margin-top: 110px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.display{
+    display:flex;
+    flex-direction: column;
+    height:130px;
+    width: 400px;
+    margin: 10px;
+    margin-left:45px;
+    margin-top: 50px;
+    border: 3px solid rgb(255, 201, 154);
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.display > .upperDisplay{
+       
+       height: 50px;
+       display: flex;
+       justify-content: end;
+       align-items: end;
+       font-size: 15px;
+       font-family: 'Andale Mono', 'monospace';
+}
+
+.display > .result{
+    display: flex;
+    flex-wrap: wrap;
+    padding:10px;
+    
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    margin-top: 22px;
+    font-size: 50px;
+    font-family: 'Andale Mono', 'monospace';
+}
+
+
+.row1{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.row1 > .delete{
+    padding:20px;
+    font-size: 30px;
+    width: 180px;
+    margin-left: -5px;
+    font-family: 'Andale Mono', 'monospace';
+    border-radius: 10px;
+    background-color: rgb(255, 201, 154);
+    
+}
+
+.row1 > .clear{
+    padding:20px;
+    font-size: 30px;
+    width: 175px;
+    font-family: 'Andale Mono', 'monospace';
+    border-radius: 10px;
+    background-color: rgb(185, 215, 215);
+}
+
+.row2{
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-right: 22px;
+    margin-top: 20px;
+}
+
+.row2 > button{
+    height: 80px;
+    width: 80px;
+    font-size: 30px;
+    background-color: #f1e3e3;
+    border-radius: 20px;
+}
+
+.row3{
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-right: 22px;
+    margin-top: 20px;
+}
+.row3 > button{
+    height: 80px;
+    width: 80px;
+    font-size: 30px;
+    background-color: #f1e3e3;
+    border-radius: 20px;
+}
+.row4{
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-right: 22px;
+    margin-top: 20px;
+}
+.row4 > button{
+    height: 80px;
+    width: 80px;
+    font-size: 30px;
+    background-color: #f1e3e3;
+    border-radius: 20px;
+}
+.row5{
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-right: 22px;
+    margin-top: 20px;
+}
+.row5 > button{
+    height: 80px;
+    width: 114px;
+    font-size: 30px;
+    background-color: #f1e3e3;
+    border-radius: 20px;
+}

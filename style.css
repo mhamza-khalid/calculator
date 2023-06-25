@@ -4,14 +4,14 @@ body{
 
 .main{
     display: flex;
-    height: 711px;
+    height: 730px;
     width: 500px;
     border: 3px solid rgb(255, 201, 154);
     flex-direction: column;
     flex-wrap: wrap;
     margin: auto;
     margin-top: 110px;
-    background-color: white;
+    background-color: #7e7676;
     border-radius: 20px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
@@ -25,7 +25,7 @@ body{
     margin-left:45px;
     margin-top: 50px;
     border: 3px solid rgb(255, 201, 154);
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(238 255 241);
     border-radius: 10px;
 }
 
@@ -35,15 +35,17 @@ body{
        display: flex;
        justify-content: end;
        align-items: end;
-       font-size: 15px;
+       font-size: 25px;
+       margin-right: 10px;
        font-family: 'Andale Mono', 'monospace';
 }
 
 .display > .result{
     display: flex;
     flex-wrap: wrap;
-    padding:10px;
-    
+    flex-direction: column;
+    margin-right: 10px;
+    overflow-y: auto;
     display: flex;
     justify-content: end;
     align-items: end;
@@ -132,8 +134,23 @@ body{
 }
 .row5 > button{
     height: 80px;
-    width: 114px;
+    width: 80px;
     font-size: 30px;
     background-color: #f1e3e3;
     border-radius: 20px;
+}
+
+.footer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Andale Mono', 'monospace';
+    font-weight: 600;
+    font-size: 24px;
+    height: 10px;
+    margin-top: 75px;
+}
+.footer > a{
+    text-decoration: none;
 }

@@ -30,7 +30,9 @@ body{
 }
 
 .display > .upperDisplay{
-       
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
        height: 50px;
        display: flex;
        justify-content: end;

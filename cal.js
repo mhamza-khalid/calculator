@@ -1,387 +1,242 @@
-let num11 = '';    
-let num22 = '';
 
-let num_one;
-let num_two;
-let ope = '';
+let numbers = document.querySelectorAll('.number');
+let operators = document.querySelectorAll('.operator');
+let equal = document.querySelector('.equal');
+let decimal = document.querySelector('#dot');
 
-let secondNum = false;
-let expression;
-let finalResult = '';
-let deleteStatus = true;
+let clear = document.querySelector('#clear');
+let backspace = document.querySelector('#delete');
 
-const decimal = document.getElementById('.');
+let buttons = document.querySelectorAll('button');
 
-const num0 = document.getElementById('0');
-const num1 = document.getElementById('1');
-const num2 = document.getElementById('2');
-const num3 = document.getElementById('3');
-const num4 = document.getElementById('4');
-const num5 = document.getElementById('5');
-const num6 = document.getElementById('6');
-const num7 = document.getElementById('7');
-const num8 = document.getElementById('8');
-const num9 = document.getElementById('9');
+let result = document.querySelector('.result');
+let upperDisplay = document.querySelector('.upperDisplay')
 
+let operatorFlag = false;  // true when we need to start taking in 2nd operrand after operator is hit
+let secondOperator = false;  // if user enters multi pair expressions eg 2+3-5*7 secondOperator becomes true
+let equalFlag = false;      // if equal is hit, it becomes true
 
-const add = document.getElementById('+');
-const subtract = document.getElementById('-');
-const divide = document.getElementById('÷');
-const multiply = document.getElementById('*');
+let operatorCount = 0;
+let operatorCheckCount = 0;  // equals 1 if an operator has been clicked and waiting for 
+                            // next number input, ensures 2 operators arent typed twice
+let decimalCount = 0;       //ensures user dosent type 2 or more dots in a row or string    
 
-const equal = document.getElementById('=');
+let firstOp = '';    //the 2 operands and 1 operator
+let secondOp= '';
+let operator = '';
 
-const delete1 = document.querySelector('.delete');
+let tempResult = '';  //in case of multi expression eg 2+3-5; 2+3 goes in tempResult and so on
+ 
+let output = '';  //final result 
 
-const display1 = document.querySelector('.result');
+numbers.forEach((number)=>{
 
-const upperDisplay = document.querySelector('.upperDisplay');
+//if user enters operator, operatorFlag becomes true so we start taking in 2nd opperand
+//if user enters second operator like in 2+3-5, we put result in first op and wait for 2nd op
 
-const clear = document.querySelector('.clear');
+    number.addEventListener('click', ()=>{
+        if(secondOperator == false && operatorFlag == false && equalFlag == false){
+            operatorCheckCount=0;
+            firstOp += number.id;
+            populateDisplay(firstOp);
+            populateUpperDisplay();
+        }
+        else if(secondOperator == false && operatorFlag == true && equalFlag == false){
+            operatorCheckCount=0;
+            secondOp += number.id;
+            populateDisplay(secondOp);
+            populateUpperDisplay();
+        }
+        else if(secondOperator == true && operatorFlag == true && equalFlag == false){
+            operatorCheckCount=0;
+            firstOp = tempResult;
+            secondOp += number.id;
+            populateDisplay(secondOp);
+            populateUpperDisplay();
+        }
+        else if(equalFlag == true){
+            operatorCheckCount=0;
+            equalFlag = false;
+            operatorFlag = false;
+            secondOperator = false;
+            equalFlag = false;
+            operatorCount = 0;
+            firstOp = '';
+            secondOp= '';
+            operator = '';
+            tempResult = '';
+            output = '';
+            firstOp += number.id;
+            populateDisplay(firstOp);
+            populateUpperDisplay();
+        }
+    })
+})
 
-delete1.addEventListener('click', ()=>{
-  if(deleteStatus === false){
-    return;
-  }
-  else if (deleteStatus === true){
-    if(secondNum === false){
-    num11 = num11.slice(0, num11.length - 1);
-    display1.textContent = num11;
+decimal.addEventListener('click', ()=>{
+    if(operatorFlag == false && decimalCount == 0){
+        firstOp += '.';
+        ++decimalCount;
+        populateDisplay(firstOp);
+        populateUpperDisplay();
     }
-    else if(secondNum === true){
-      num22 = num22.slice(0, num22.length - 1);
-      display1.textContent = num22;
+    else if(operatorFlag == true && decimalCount == 0){
+        secondOp += '.';
+        ++decimalCount;
+        populateDisplay(secondOp);
+        populateUpperDisplay();
     }
-  }
-});
+})
 
-clear.addEventListener('click', ()=> {
-       num11='';
-       num22='';
-       ope = '';
-       finalResult = '';
-       expression = '';
-       upperDisplay.textContent = '';
-       display1.textContent = '';
-       secondNum = false;
-});
+backspace.addEventListener('click', ()=>{
+    if(operatorFlag == false && equalFlag == false && operatorCheckCount == 0){
+        firstOp = firstOp.slice(0,-1);
+        populateDisplay(firstOp);
+        populateUpperDisplay();
+    }
+    else if(operatorFlag == true && equalFlag == false && operatorCheckCount == 0){
+        secondOp = secondOp.slice(0,-1);
+        populateDisplay(secondOp);
+        populateUpperDisplay();
+    }
+})
+operators.forEach((operatorIn)=>{
 
-decimal.addEventListener('click', handle_decimal);
-document.addEventListener('keydown', handle_decimal);
+    operatorIn.addEventListener('click', ()=>{
+        decimalCount = 0;
+        if(operatorCheckCount < 1){
 
-function handle_decimal(event){
-if (event.keyCode === 190 || event.keyCode === 110 || event.type === 'click'){
-     if (secondNum === false){
-        if (num11.includes('.')){
-        return
+            ++operatorCheckCount;
+            operatorFlag = true;
+            ++operatorCount;
+            if(operatorCount > 1){
+                secondOperator = true;
+                tempResult = operate(firstOp, secondOp, operator);
+                populateDisplay(tempResult);
+                secondOp = ''
+            }
+            else {populateDisplay(operatorIn.id)}
+            operator = operatorIn.id;
+            equalFlag = false;
+            // populateUpperDisplay();
+
         }
-        else{
-            num11 = num11 + '.';
-        }
-        display1.textContent = num11;
-      }
-    else if(secondNum === true){
-      if (num22.includes('.')){
-        return
-        }
-        else{
-            num22 = num22 + '.';
-        }
-        display1.textContent = num22;
-  }
- }
- else return;
-}
-
-num0.addEventListener('click', handle_0);
-document.addEventListener('keydown', handle_0)
-
-function handle_0(event){
-  if (event.keyCode === 48 || event.keyCode === 96 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '0'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '0';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num1.addEventListener('click', handle_1);
-document.addEventListener('keydown', handle_1)
-
-function handle_1(event){
-  if (event.keyCode === 49 || event.keyCode === 97 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '1'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '1';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num2.addEventListener('click', handle_2);
-document.addEventListener('keydown', handle_2)
+        else { return }
+    })
+})
 
 
-function handle_2(event){
-  if (event.keyCode === 50 || event.keyCode === 98 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '2'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '2';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
+clear.addEventListener('click', reset)
 
-num3.addEventListener('click', handle_3);
-document.addEventListener('keydown', handle_3)
-
-
-function handle_3(event){
-  if (event.keyCode === 51 || event.keyCode === 99 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '3'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '3';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num4.addEventListener('click', handle_4);
-document.addEventListener('keydown', handle_4)
-
-
-function handle_4(event){
-  if (event.keyCode === 52 || event.keyCode === 100 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '4'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '4';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num5.addEventListener('click', handle_5);
-document.addEventListener('keydown', handle_5)
-
-function handle_5(event){
-  if (event.keyCode === 53 || event.keyCode === 101 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '5'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '5';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num6.addEventListener('click', handle_6);
-document.addEventListener('keydown', handle_6)
-
-
-function handle_6(event){
-  if (event.keyCode === 54 || event.keyCode === 102 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '6'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '6';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num7.addEventListener('click', handle_7);
-document.addEventListener('keydown', handle_7)
-
-
-function handle_7(event){
-  if (event.keyCode === 55 || event.keyCode === 103 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '7'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '7';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-
-num8.addEventListener('click', handle_8);
-document.addEventListener('keydown', handle_8)
-
-function handle_8(event){
-  if (event.keyCode === 56 || event.keyCode === 104 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '8'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '8';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-num9.addEventListener('click', handle_9);
-document.addEventListener('keydown', handle_9)
-
-
-function handle_9(event){
-  if (event.keyCode === 57 || event.keyCode === 105 || event.type === 'click'){
-  if(secondNum === false){
-    num11 = num11 + '9'
-    display1.textContent = num11;
-  }
-  else if (secondNum === true){
-    num22 = num22 + '9';
-    display1.textContent = num22;
-  }
-  }
-  else return;
-}
-
-
-
-add.addEventListener('click', handle_add);
-document.addEventListener('keydown', handle_add);
-
-function handle_add(event){
-  if (event.keyCode === 107 || event.type === 'click'){
-  deleteStatus = true;
-  ope = '+';
-  num_one = num11 + ope;
-  upperDisplay.textContent = num_one;
-  display1.textContent = '';
-  secondNum = true;
-  }
-  else return;
-}
-
-multiply.addEventListener('click', handle_Multiply);
-document.addEventListener('keydown', handle_Multiply)
-
-function handle_Multiply(event){
-  if (event.keyCode === 106 || event.type === 'click'){
-  deleteStatus = true;
-  ope = '*';
-  num_one = num11 + ope;
-  upperDisplay.textContent = num_one;
-  display1.textContent = '';
-  secondNum = true;
- }
- else return;
-}
-
-subtract.addEventListener('click', handle_Subtract);
-document.addEventListener('keydown', handle_Subtract);
-
-
-function handle_Subtract(event){
-  if (event.keyCode === 109 || event.type === 'click'){
-  deleteStatus = true;
-  ope = '-';
-  num_one = num11 + ope;
-  upperDisplay.textContent = num_one;
-  display1.textContent = '';
-  secondNum = true;
-  }
-  else return;
-}
-
-divide.addEventListener('click', handle_divide);
-document.addEventListener('keydown', handle_divide);
-
-function handle_divide(event){
-  
-  if (event.keyCode === 191 ||event.keyCode === 111 || event.type === 'click'){
-  deleteStatus = true;
-  ope = '÷';
-  num_one = num11 + ope;
-  upperDisplay.textContent = num_one;
-  display1.textContent = '';
-  secondNum = true;
-  }
-  else return;
-}
-
-equal.addEventListener('click', handle_Equal);
-document.addEventListener('keydown', handle_Equal);
-
-
-
-function handle_Equal(event){
-    
-  if (event.keyCode === 187 ||event.keyCode === 13 || event.type === 'click'){
-    deleteStatus = 'false';
-    expression = num_one + num22 + '=';
-    upperDisplay.textContent = '';
-    display1.textContent = '';
-    upperDisplay.textContent = expression;
-    finalResult = operate(num11,num22,ope);
-    if (finalResult === undefined) finalResult = '';
-    display1.textContent = finalResult;
-    num11 = finalResult;
-    num22 = '';
-  }  
-  else return;
-}
-
-function operate(num11, num22, ope){
-  let num1 = num11;
-  let num2 = num22;
-  let oper = ope;
-
-  switch (oper){
-    case '+':
-      return +num1 + +num2;
-    case '-':
-      return +num1 - +num2;
-    case '*':
-      return +num1 * +num2;
-    case '÷':
-      if(num22 == 0){
-        alert("You can't divide by 0!")
-        num11='';
-        num22='';
-        ope = '';
-        finalResult = '';
-        expression = '';
+function reset(){
+        operatorCheckCount=0;
+        equalFlag = false;
+        operatorFlag = false;
+        secondOperator = false;
+        equalFlag = false;
+        operatorCount = 0;
+        decimalCount = 0;
+        firstOp = '';
+        secondOp= '';
+        operator = '';
+        tempResult = '';
+        output = '';
+        populateDisplay('');
         upperDisplay.textContent = '';
-        display1.textContent = '';
-        secondNum = false;
-      }
-      else if (num22 != 0){
-      return +num1 / +num2;
-      }
 }
+
+equal.addEventListener('click', ()=>{
+
+    if (firstOp == '' || secondOp == '' || operator == ''){ return }
+    else{
+    tempResult = operate(firstOp, secondOp, operator);
+    populateDisplay(tempResult);
+    populateUpperDisplay();
+    operatorCheckCount=0;
+    equalFlag = true;
+    }
+ })
+    
+    
+
+function populateDisplay(input){
+
+    result.textContent = '';
+    result.textContent += input;
 }
+
+
+function populateUpperDisplay(){
+
+    upperDisplay.textContent = firstOp + operator + secondOp + '='
+}
+
+function add(a, b){
+
+    a = parseFloat(a);   //parse is here to convert string to integer to avoid 
+    b = parseFloat(b);   //string concatenation
+    return a+b;
+
+}
+
+function subtract(a, b){
+
+    a = parseFloat(a);
+    b = parseFloat(b);
+    return a-b;
+
+}
+
+function multiply(a, b){
+
+    a = parseFloat(a);
+    b = parseFloat(b);
+    return a*b;
+
+}
+
+function divide(a, b){
+
+    a = parseFloat(a);
+    b = parseFloat(b);
+    if (b == 0){
+        alert('Cant divide by zero!')
+        reset();
+        return '';
+    }
+    else{
+        return a/b;
+    }
+    
+
+}
+
+function operate (firstOpperand, secondOpperand, operator){
+    
+
+    if (operator == '+'){  return add(firstOpperand,secondOpperand)}
+    
+    else if (operator == '-') { return subtract(firstOpperand, secondOpperand) }
+
+    else if (operator == '*') { return multiply(firstOpperand, secondOpperand)}
+
+    else if (operator == '÷') { return divide(firstOpperand, secondOpperand)}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

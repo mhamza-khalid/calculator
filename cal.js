@@ -118,15 +118,23 @@ operators.forEach((operatorIn)=>{
                 secondOperator = true;
                 tempResult = operate(firstOp, secondOp, operator);
                 populateDisplay(tempResult);
-                secondOp = ''
+                secondOp = '';
             }
             else {populateDisplay(operatorIn.id)}
             operator = operatorIn.id;
             equalFlag = false;
-            // populateUpperDisplay();
+            populateDisplay(operatorIn.id)
+            populateUpperDisplay();
 
         }
-        else { return }
+        else if (lockOperator == true){
+            firstOp = 0;
+            operatorFlag = true;
+            operator = operatorIn.id;
+            upperDisplay.textContent = firstOp + operator;
+            ++operatorCount;
+            lockOperator = false;
+        }
     })
 })
 
@@ -153,13 +161,13 @@ function reset(){
 
 equal.addEventListener('click', ()=>{
 
-    if (firstOp == '' || secondOp == '' || operator == ''){ return }
+    if (firstOp === '' || secondOp == '' || operator == ''){ return }
     else{
     tempResult = operate(firstOp, secondOp, operator);
     populateDisplay(tempResult);
+    equalFlag = true;
     populateUpperDisplay();
     operatorCheckCount=0;
-    equalFlag = true;
     }
  })
     
@@ -174,7 +182,13 @@ function populateDisplay(input){
 
 function populateUpperDisplay(){
 
-    upperDisplay.textContent = firstOp + operator + secondOp + '='
+    if(equalFlag == false){
+    upperDisplay.textContent = firstOp + operator;
+    }
+    else if (equalFlag == true){
+        upperDisplay.textContent = firstOp + operator + secondOp + '=';
+    }
+
 }
 
 function add(a, b){

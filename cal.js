@@ -15,6 +15,7 @@ let upperDisplay = document.querySelector('.upperDisplay')
 let operatorFlag = false;  // true when we need to start taking in 2nd operrand after operator is hit
 let secondOperator = false;  // if user enters multi pair expressions eg 2+3-5*7 secondOperator becomes true
 let equalFlag = false;      // if equal is hit, it becomes true
+let lockOperator = true;  // disables operator until first opperand in entered
 
 let operatorCount = 0;
 let operatorCheckCount = 0;  // equals 1 if an operator has been clicked and waiting for 
@@ -29,6 +30,8 @@ let tempResult = '';  //in case of multi expression eg 2+3-5; 2+3 goes in tempRe
  
 let output = '';  //final result 
 
+
+
 numbers.forEach((number)=>{
 
 //if user enters operator, operatorFlag becomes true so we start taking in 2nd opperand
@@ -40,6 +43,7 @@ numbers.forEach((number)=>{
             firstOp += number.id;
             populateDisplay(firstOp);
             populateUpperDisplay();
+            lockOperator = false;
         }
         else if(secondOperator == false && operatorFlag == true && equalFlag == false){
             operatorCheckCount=0;
@@ -103,8 +107,9 @@ backspace.addEventListener('click', ()=>{
 operators.forEach((operatorIn)=>{
 
     operatorIn.addEventListener('click', ()=>{
+
         decimalCount = 0;
-        if(operatorCheckCount < 1){
+        if(operatorCheckCount < 1 && lockOperator == false){
 
             ++operatorCheckCount;
             operatorFlag = true;
@@ -134,6 +139,7 @@ function reset(){
         operatorFlag = false;
         secondOperator = false;
         equalFlag = false;
+        lockOperator = true;
         operatorCount = 0;
         decimalCount = 0;
         firstOp = '';

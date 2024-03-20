@@ -222,7 +222,7 @@ function divide(a, b){
     if (b == 0){
         alert('Cant divide by zero!')
         reset();
-        return '';
+        // return;
     }
     else{
         return a/b;

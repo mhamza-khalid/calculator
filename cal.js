@@ -124,7 +124,7 @@ operators.forEach((operatorIn)=>{
             operator = operatorIn.id;
             equalFlag = false;
             populateDisplay(operatorIn.id)
-            populateUpperDisplay();
+            upperDisplay.textContent = tempResult + operator;
 
         }
         else if (lockOperator == true){
